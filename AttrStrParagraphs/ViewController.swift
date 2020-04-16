@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        let attrStr = NSAttributedString(string: """
+        let attrStr = NSMutableAttributedString(string: """
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eget dapibus nisi, quis aliquet lorem. Nunc id lobortis ex, a interdum augue. Sed vel mi ultricies, aliquam augue vel, varius tellus. Nunc sagittis lacinia mi vitae blandit. Aenean at cursus nisl. Curabitur in pulvinar sem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Curabitur odio quam, porta ac sapien ut, molestie cursus nisi. In vehicula efficitur nisl, a cursus sem feugiat ac. Quisque accumsan interdum dui vel iaculis. Etiam vehicula sed tortor non faucibus. Cras porta massa in mauris malesuada, a consequat augue aliquet. Sed fermentum facilisis est, vitae sodales eros lobortis nec. Maecenas pharetra volutpat magna, ut eleifend libero cursus eu. Donec luctus dui eget justo tincidunt placerat.
 
             لكن لا بد أن أوضح لك أن كل هذه الأفكار المغلوطة حول استنكار  النشوة وتمجيد الألم نشأت بالفعل، وسأعرض لك التفاصيل لتكتشف حقيقة وأساس تلك السعادة البشرية، فلا أحد يرفض أو يكره أو يتجنب الشعور بالسعادة، ولكن بفضل هؤلاء الأشخاص الذين لا يدركون بأن السعادة لا بد أن نستشعرها بصورة أكثر عقلانية ومنطقية فيعرضهم هذا لمواجهة الظروف الأليمة، وأكرر بأنه لا يوجد من يرغب في الحب ونيل المنال ويتلذذ بالآلام، الألم هو الألم ولكن نتيجة لظروف ما قد تكمن السعاده فيما نتحمله من كد وأسي.
@@ -23,9 +23,11 @@ class ViewController: UIViewController {
         """, attributes: [
             .font: UIFont.systemFont(ofSize: 17),
             .foregroundColor: UIColor.darkText
-            ]).paragraphsNaturallyAligned
+        ])
         
-        textView.attributedText = attrStr
+        attrStr.addAttribute(.foregroundColor, value: UIColor.red, range: NSRange(location: 100, length: 100))
+        
+        textView.attributedText = attrStr.paragraphsNaturallyAligned
 
     }
     

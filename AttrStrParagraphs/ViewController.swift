@@ -26,8 +26,9 @@ class ViewController: UIViewController {
         ])
         
         attrStr.addAttribute(.foregroundColor, value: UIColor.red, range: NSRange(location: 100, length: 100))
+        attrStr.alignParagraphsNaturally()
         
-        textView.attributedText = attrStr.paragraphsNaturallyAligned
+        textView.attributedText = attrStr
 
     }
     
@@ -51,13 +52,19 @@ class ViewController: UIViewController {
 protocol ParagraphsNaturallyAligned: NSAttributedString {}
 extension ParagraphsNaturallyAligned {
     var paragraphsNaturallyAligned: Self {
-        let mutable = NSMutableAttributedString(attributedString: self)
-        (mutable.string as NSString).enumerateSubstrings(in: NSRange(location: 0, length: length), options: .byParagraphs) { (paragaphContent, paragraphRange, _, _) in
+        let mutable: NSMutableAttributedString = self is NSMutableAttributedString ? self as! NSMutableAttributedString : NSMutableAttributedString(attributedString: self)
+        mutable.alignParagraphsNaturally()
+        return (self is NSMutableAttributedString ? mutable : NSAttributedString(attributedString: mutable)) as! Self
+    }
+}
+extension ParagraphsNaturallyAligned where Self == NSMutableAttributedString {
+    func alignParagraphsNaturally() {
+        (string as NSString).enumerateSubstrings(in: NSRange(location: 0, length: length), options: .byParagraphs) { (paragaphContent, paragraphRange, _, _) in
             
             guard let paragaphContent = paragaphContent else { return }
             
             var existingParaghStyle: NSParagraphStyle?
-            mutable.enumerateAttribute(.paragraphStyle, in: paragraphRange, options: []) { (value, _, _) in
+            self.enumerateAttribute(.paragraphStyle, in: paragraphRange, options: []) { (value, _, _) in
                 if let value = value as? NSParagraphStyle {
                     existingParaghStyle = value
                 }
@@ -69,10 +76,8 @@ extension ParagraphsNaturallyAligned {
                 newParagraphStyle.alignment = isRTL ? .right : .left
             }
             
-            mutable.addAttribute(.paragraphStyle, value: newParagraphStyle, range: paragraphRange)
-            
+            self.addAttribute(.paragraphStyle, value: newParagraphStyle, range: paragraphRange)
         }
-        return (self is NSMutableAttributedString ? mutable : NSAttributedString(attributedString: mutable)) as! Self
     }
 }
 extension NSAttributedString: ParagraphsNaturallyAligned {}

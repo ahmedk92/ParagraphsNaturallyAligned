@@ -52,7 +52,7 @@ class ViewController: UIViewController {
 protocol ParagraphsNaturallyAligned: NSAttributedString {}
 extension ParagraphsNaturallyAligned {
     var paragraphsNaturallyAligned: Self {
-        let mutable: NSMutableAttributedString = self is NSMutableAttributedString ? self as! NSMutableAttributedString : NSMutableAttributedString(attributedString: self)
+        let mutable = NSMutableAttributedString(attributedString: self)
         mutable.alignParagraphsNaturally()
         return (self is NSMutableAttributedString ? mutable : NSAttributedString(attributedString: mutable)) as! Self
     }
